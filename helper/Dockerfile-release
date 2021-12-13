@@ -6,9 +6,9 @@ WORKDIR /app/dtm
 # RUN go env -w GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
 EXPOSE 8080
 COPY . .
-RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -ldflags="-s -w" app/main.go && apk add upx && upx main
+RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -ldflags="-s -w" app/main.go
 
-FROM --platform=$TARGETPLATFORM alpine:3.14 as runner
+FROM --platform=$TARGETPLATFORM alpine:3.14
 COPY --from=builder /app/dtm/main /app/dtm/
 ENV IS_DOCKER=1
 WORKDIR /app/dtm
